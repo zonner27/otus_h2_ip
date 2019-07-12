@@ -31,31 +31,66 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
+void print(std::vector<std::vector<std::string>> ip_pool)
+{
+    for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
+    {
+        for(std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
+        {
+            if (ip_part != ip->cbegin())
+            {
+                std::cout << ".";
+
+            }
+            std::cout << *ip_part;
+        }
+        std::cout << std::endl;
+    }
+}
+
+void print2(std::vector<std::string> strv)
+{
+    for (auto ip = strv.begin(); ip != strv.end(); ++ip)
+    {
+        if (ip != strv.begin())
+            std::cout << ".";
+        std::cout << *ip;
+    }
+    std::cout << std::endl;
+}
+
 bool ipcomparison(std::vector<std::string> str1, std::vector<std::string> str2)
 {
-    if (std::stoi(str1[0]) > std::stoi(str2[0]))
-        return true;
-    else if (std::stoi(str1[0]) < std::stoi(str2[0]))
-        return false;
-    else
+    for (int i = 0; i < 4; i++)
     {
-        if (std::stoi(str1[1]) > std::stoi(str2[1]))
+        if (std::stoi(str1[i]) > std::stoi(str2[i]))
             return true;
-        else if (std::stoi(str1[1]) < std::stoi(str2[1]))
+        else if (std::stoi(str1[i]) < std::stoi(str2[i]))
             return false;
-        else
+    }
+    return true;
+}
+
+void ipfilter(std::vector<std::string> strv, std::string str)
+{
+    if (strv[0] == str)
+        print2(strv);
+}
+
+void ipfilter(std::vector<std::string> strv, std::string str0, std::string str1)
+{
+    if (strv[0] == str0 && strv[1] == str1)
+         print2(strv);
+}
+
+void ipfilter_any(std::vector<std::string> strv, std::string str)
+{
+    for (auto ip : strv)
+    {
+        if (ip == str)
         {
-            if (std::stoi(str1[2]) > std::stoi(str2[2]))
-                return true;
-            else if (std::stoi(str1[2]) < std::stoi(str2[2]))
-                return false;
-            else
-            {
-                if (std::stoi(str1[3]) >= std::stoi(str2[3]))
-                    return true;
-                else
-                    return false;
-            }
+             print2(strv);
+             break;
         }
     }
 }
@@ -73,21 +108,18 @@ int main()
         }
 
         // TODO reverse lexicographically sort
-        std::sort(ip_pool.begin(), ip_pool.end(), ipcomparison);
+        decltype(ip_pool) ip_temp(ip_pool.size());
+        std::copy(ip_pool.begin(), ip_pool.end(), ip_temp.begin());
+        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
+        print(ip_temp);
+        ip_temp.clear();
 
-        for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
-        {
-            for(std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
-            {
-                if (ip_part != ip->cbegin())
-                {
-                    std::cout << ".";
-
-                }
-                std::cout << *ip_part;
-            }
-            std::cout << std::endl;
-        }
+        // ip = filter(1)
+        std::for_each(ip_pool.begin(), ip_pool.end(), [](auto &strv){ ipfilter(strv, "1"); });
+        // ip = filter(46, 70)
+        std::for_each(ip_pool.begin(), ip_pool.end(), [](auto &strv){ ipfilter(strv, "46", "70"); });
+        //ip = filter_any(46)
+        std::for_each(ip_pool.begin(), ip_pool.end(), [](auto &strv){ ipfilter_any(strv, "46"); });
 
 
         // 222.173.235.246
