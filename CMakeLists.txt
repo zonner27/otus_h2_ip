@@ -12,15 +12,14 @@ set(TEST_PATH "${PROJECT_SOURCE_DIR}/tests")
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-add_executable(ip_filter    ${SOURCE_PATH}/ip_filter.cpp
+add_executable(ipfilter    ${SOURCE_PATH}/ip_filter.cpp
                             ${SOURCE_PATH}/lib.h)
 
 add_executable(test_filter  ${TEST_PATH}/test_filter.cpp
                             ${SOURCE_PATH}/lib.h)
 
-
 set_target_properties(
-    ip_filter
+    ipfilter
     test_filter
     PROPERTIES
         CXX_STANDARD 14
@@ -37,18 +36,17 @@ set_target_properties(
 
 target_link_libraries(test_filter
     ${Boost_LIBRARIES}
-#    ip_filter
 )
 
 if (MSVC)
-    target_compile_options(ip_filter PRIVATE
+    target_compile_options(ipfilter PRIVATE
         /W4
     )
     target_compile_options(test_filter PRIVATE
         /W4
     )
 else ()
-    target_compile_options(ip_filter PRIVATE
+    target_compile_options(ipfilter PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(test_filter PRIVATE
@@ -58,7 +56,7 @@ endif()
 
 
 
-install(TARGETS ip_filter RUNTIME DESTINATION bin)
+install(TARGETS ipfilter RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
@@ -72,3 +70,7 @@ include(CPack)
 
 enable_testing()
 
+add_test(test_sort test_filter)
+add_test(test_filter_1 test_filter)
+add_test(test_filter_46_70 test_filter)
+add_test(test_filter_46_any test_filter)
