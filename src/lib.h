@@ -72,28 +72,33 @@ bool ipcomparison(std::vector<std::string> str1, std::vector<std::string> str2)
 }
 
 
-void ipfilter(std::vector<std::string> strv, std::string str)
+bool ipfilter(std::vector<std::string> strv, std::string str)
 {
     if (strv[0] == str)
-        print2(strv);
+        return true;
+    else
+        return false;
 }
 
-void ipfilter(std::vector<std::string> strv, std::string str0, std::string str1)
+bool ipfilter(std::vector<std::string> strv, std::string str0, std::string str1)
 {
     if (strv[0] == str0 && strv[1] == str1)
-         print2(strv);
+        return true;
+    else
+        return false;
 }
 
-void ipfilter_any(std::vector<std::string> strv, std::string str)
+bool ipfilter_any(std::vector<std::string> strv, std::string str)
 {
     for (auto ip : strv)
     {
         if (ip == str)
         {
-             print2(strv);
+             return true;
              break;
         }
     }
+    return false;
 }
 
 
