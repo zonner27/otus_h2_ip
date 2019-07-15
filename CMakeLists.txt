@@ -5,21 +5,21 @@ if($ENV{TRAVIS_BUILD_NUMBER})
     set(PATCH_VERSION $ENV{TRAVIS_BUILD_NUMBER})
 endif()
 
-project(ipfilter VERSION 0.0.${PATCH_VERSION})
+project(ip_filter VERSION 0.0.${PATCH_VERSION})
 
 set(SOURCE_PATH "${PROJECT_SOURCE_DIR}/src")
 set(TEST_PATH "${PROJECT_SOURCE_DIR}/tests")
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-add_executable(ipfilter    ${SOURCE_PATH}/ip_filter.cpp
+add_executable(ip_filter    ${SOURCE_PATH}/ip_filter.cpp
                             ${SOURCE_PATH}/lib.h)
 
 add_executable(test_filter  ${TEST_PATH}/test_filter.cpp
                             ${SOURCE_PATH}/lib.h)
 
 set_target_properties(
-    ipfilter
+    ip_filter
     test_filter
     PROPERTIES
         CXX_STANDARD 14
@@ -39,14 +39,14 @@ target_link_libraries(test_filter
 )
 
 if (MSVC)
-    target_compile_options(ipfilter PRIVATE
+    target_compile_options(ip_filter PRIVATE
         /W4
     )
     target_compile_options(test_filter PRIVATE
         /W4
     )
 else ()
-    target_compile_options(ipfilter PRIVATE
+    target_compile_options(ip_filter PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
     target_compile_options(test_filter PRIVATE
@@ -56,7 +56,7 @@ endif()
 
 
 
-install(TARGETS ipfilter RUNTIME DESTINATION bin)
+install(TARGETS ip_filter RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 
