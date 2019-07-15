@@ -27,19 +27,6 @@ void print(std::vector<std::vector<std::string>> ip_pool)
     }
 }
 
-void print2(std::vector<std::string> strv)
-{
-    for (auto ip = strv.begin(); ip != strv.end(); ++ip)
-    {
-        if (ip != strv.begin())
-            std::cout << ".";
-        std::cout << *ip;
-    }
-    std::cout << std::endl;
-}
-
-
-
 std::vector<std::string> split(const std::string &str, char d)
 {
     std::vector<std::string> r;
