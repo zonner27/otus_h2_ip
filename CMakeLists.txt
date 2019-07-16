@@ -12,11 +12,11 @@ set(TEST_PATH "${PROJECT_SOURCE_DIR}/tests")
 
 find_package(Boost COMPONENTS unit_test_framework REQUIRED)
 
-add_executable(ip_filter    ${SOURCE_PATH}/ip_filter.cpp
-                            ${SOURCE_PATH}/lib.h)
+add_executable(ip_filter    ${SOURCE_PATH}/ip_filter.cpp)
 
-add_executable(test_filter  ${TEST_PATH}/test_filter.cpp
-                            ${SOURCE_PATH}/lib.h)
+add_library(lib ${SOURCE_PATH}/lib.cpp)
+
+add_executable(test_filter  ${TEST_PATH}/test_filter.cpp)
 
 set_target_properties(
     ip_filter
@@ -34,8 +34,13 @@ set_target_properties(
         INCLUDE_DIRECTORIES ${SOURCE_PATH}
 )
 
+target_link_libraries(ip_filter
+        lib
+)
+
 target_link_libraries(test_filter
     ${Boost_LIBRARIES}
+    lib
 )
 
 if (MSVC)

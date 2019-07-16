@@ -37,16 +37,19 @@ int main()
 
         // ip = filter(1)
         std::for_each(ip_pool.begin(), ip_pool.end(), [&ip_temp](auto &strv){ if (ipfilter(strv, "1")) ip_temp.push_back(strv); });
+        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
         print(ip_temp);
         ip_temp.clear();
 
         // ip = filter(46, 70)
         std::for_each(ip_pool.begin(), ip_pool.end(), [&ip_temp](auto &strv){ if (ipfilter(strv, "46", "70")) ip_temp.push_back(strv); });
+        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
         print(ip_temp);
         ip_temp.clear();
 
         //ip = filter_any(46)
         std::for_each(ip_pool.begin(), ip_pool.end(), [&ip_temp](auto &strv){ if (ipfilter_any(strv, "46")) ip_temp.push_back(strv); });
+        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
         print(ip_temp);
         ip_temp.clear();
 
