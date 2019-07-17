@@ -1,21 +1,5 @@
 #include "lib.h"
 
-void print(std::vector<std::vector<std::string>> ip_pool)
-{
-    for(std::vector<std::vector<std::string> >::const_iterator ip = ip_pool.cbegin(); ip != ip_pool.cend(); ++ip)
-    {
-        for(std::vector<std::string>::const_iterator ip_part = ip->cbegin(); ip_part != ip->cend(); ++ip_part)
-        {
-            if (ip_part != ip->cbegin())
-            {
-                std::cout << ".";
-
-            }
-            std::cout << *ip_part;
-        }
-        std::cout << std::endl;
-    }
-}
 
 std::vector<std::string> split(const std::string &str, char d)
 {
@@ -36,41 +20,43 @@ std::vector<std::string> split(const std::string &str, char d)
     return r;
 }
 
-bool ipcomparison(std::vector<std::string> str1, std::vector<std::string> str2)
+ip_adress ipget(const std::vector<std::string> &strv)
 {
-    for (int i = 0; i < 4; i++)
-    {
-        if (std::stoi(str1[i]) > std::stoi(str2[i]))
-            return true;
-        else if (std::stoi(str1[i]) < std::stoi(str2[i]))
-            return false;
-    }
-    return true;
+    return std::make_tuple(std::stoi(strv[0]), std::stoi(strv[1]), std::stoi(strv[2]), std::stoi(strv[3]));
 }
 
-
-bool ipfilter(std::vector<std::string> strv, std::string str)
+void print2(const std::vector<ip_adress> &ipv)
 {
-    if (strv[0] == str)
-        return true;
-    else
-        return false;
+    for (unsigned int i = 0; i < ipv.size(); i++)
+        std::cout << static_cast<int>(std::get<0>(ipv[i])) << "."
+                  << static_cast<int>(std::get<1>(ipv[i])) << "."
+                  << static_cast<int>(std::get<2>(ipv[i])) << "."
+                  << static_cast<int>(std::get<3>(ipv[i])) << std::endl;
 }
 
-bool ipfilter(std::vector<std::string> strv, std::string str0, std::string str1)
+std::vector<ip_adress> ipfilter(const std::vector<ip_adress> &ipv, int number1)
 {
-    if (strv[0] == str0 && strv[1] == str1)
-        return true;
-    else
-        return false;
+    std::vector<ip_adress> filter;
+    for (unsigned int i = 0; i < ipv.size(); i++)
+        if (std::get<0>(ipv[i]) == number1)
+            filter.push_back(ipv[i]);
+    return filter;
 }
 
-bool ipfilter_any(std::vector<std::string> strv, std::string str)
+std::vector<ip_adress> ipfilter(const std::vector<ip_adress> &ipv, int number1, int number2)
 {
-    for (auto ip : strv)
-    {
-        if (ip == str)
-             return true;
-    }
-    return false;
+    std::vector<ip_adress> filter;
+    for (unsigned int i = 0; i < ipv.size(); i++)
+        if ((std::get<0>(ipv[i]) == number1) && (std::get<1>(ipv[i]) == number2))
+                filter.push_back(ipv[i]);
+    return filter;
+}
+
+std::vector<ip_adress> ipfilter_any(const std::vector<ip_adress> &ipv, int number1)
+{
+    std::vector<ip_adress> filter;
+    for (unsigned int i = 0; i < ipv.size(); i++)
+        if ((std::get<0>(ipv[i]) == number1) || (std::get<1>(ipv[i]) == number1) || (std::get<2>(ipv[i]) == number1) || (std::get<3>(ipv[i]) == number1))
+                filter.push_back(ipv[i]);
+    return filter;
 }

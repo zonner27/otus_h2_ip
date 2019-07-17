@@ -9,18 +9,13 @@
 #include <tuple>
 #include <algorithm>
 
-
-void print(std::vector<std::vector<std::string>> ip_pool);
+using ip_adress = std::tuple<uint8_t, uint8_t, uint8_t, uint8_t>;
 
 std::vector<std::string> split(const std::string &str, char d);
-
-bool ipcomparison(std::vector<std::string> str1, std::vector<std::string> str2);
-
-bool ipfilter(std::vector<std::string> strv, std::string str);
-
-bool ipfilter(std::vector<std::string> strv, std::string str0, std::string str1);
-
-bool ipfilter_any(std::vector<std::string> strv, std::string str);
-
+ip_adress ipget(const std::vector<std::string> &strv);
+void print2(const std::vector<ip_adress> &ipv);
+std::vector<ip_adress> ipfilter(const std::vector<ip_adress> &ipv, int number1);
+std::vector<ip_adress> ipfilter(const std::vector<ip_adress> &ipv, int number1, int number2);
+std::vector<ip_adress> ipfilter_any(const std::vector<ip_adress> &ipv, int number1);
 
 #endif // LIB201516072019_H

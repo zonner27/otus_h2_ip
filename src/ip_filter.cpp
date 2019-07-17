@@ -14,44 +14,30 @@
 // (".11", '.') -> ["", "11"]
 // ("11.22", '.') -> ["11", "22"]
 
-
-
 int main()
 {
     try
-    {
-        std::vector<std::vector<std::string> > ip_pool;
+    {       
+        std::vector<ip_adress> ipv;
 
         for(std::string line; std::getline(std::cin, line);)
         {
             std::vector<std::string> v = split(line, '\t');
-            ip_pool.push_back(split(v.at(0), '.'));
+            ipv.push_back(ipget(split(v.at(0), '.')));
         }
 
-        // TODO reverse lexicographically sort
-        decltype(ip_pool) ip_temp(ip_pool.size());
-        std::copy(ip_pool.begin(), ip_pool.end(), ip_temp.begin());
-        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
-        print(ip_temp);
-        ip_temp.clear();
+        std::sort(ipv.begin(), ipv.end(),  std::greater<ip_adress>());
+        print2(ipv);
 
-        // ip = filter(1)
-        std::for_each(ip_pool.begin(), ip_pool.end(), [&ip_temp](auto &strv){ if (ipfilter(strv, "1")) ip_temp.push_back(strv); });
-        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
-        print(ip_temp);
-        ip_temp.clear();
+        auto ip_temp = ipfilter(ipv, 1);
+        print2(ip_temp);
 
-        // ip = filter(46, 70)
-        std::for_each(ip_pool.begin(), ip_pool.end(), [&ip_temp](auto &strv){ if (ipfilter(strv, "46", "70")) ip_temp.push_back(strv); });
-        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
-        print(ip_temp);
-        ip_temp.clear();
+        ip_temp = ipfilter(ipv, 46, 70);
+        print2(ip_temp);
 
-        //ip = filter_any(46)
-        std::for_each(ip_pool.begin(), ip_pool.end(), [&ip_temp](auto &strv){ if (ipfilter_any(strv, "46")) ip_temp.push_back(strv); });
-        std::sort(ip_temp.begin(), ip_temp.end(), ipcomparison);
-        print(ip_temp);
-        ip_temp.clear();
+        ip_temp = ipfilter_any(ipv, 46);
+        print2(ip_temp);
+
 
         // 222.173.235.246
         // 222.130.177.64

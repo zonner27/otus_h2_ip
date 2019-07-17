@@ -11,48 +11,55 @@ BOOST_AUTO_TEST_SUITE(test_main)
 BOOST_AUTO_TEST_CASE(test_sort)
 {
 
-    std::vector<std::vector<std::string>> ip_test = {{"2","2","2","2"}, {"1","1","1","1"}, {"5","5","5","5"}};
-    std::vector<std::vector<std::string>> result = {{"5","5","5","5"}, {"2","2","2","2"}, {"1","1","1","1"}};
+    std::vector<ip_adress> ip_test = {std::make_tuple(1,1,1,1),
+                                      std::make_tuple(5,5,5,5),
+                                      std::make_tuple(2,2,2,2)};
 
-    std::sort(ip_test.begin(), ip_test.end(), ipcomparison);
+    std::vector<ip_adress> result = {std::make_tuple(5,5,5,5),
+                                     std::make_tuple(2,2,2,2),
+                                     std::make_tuple(1,1,1,1)};
+
+    std::sort(ip_test.begin(), ip_test.end(),  std::greater<ip_adress>());
     BOOST_REQUIRE(ip_test == result);
 
 }
 
 BOOST_AUTO_TEST_CASE(test_filter_1)
 {
+    std::vector<ip_adress> ip_test = {std::make_tuple(1,1,1,1),
+                                      std::make_tuple(5,5,5,5),
+                                      std::make_tuple(2,2,2,2)};
 
-    std::vector<std::vector<std::string>> ip_test = {{"2","2","2","2"}, {"1","1","1","1"}, {"5","5","5","5"}};
-    std::vector<std::vector<std::string>> result = {{"1","1","1","1"}};
-    std::vector<std::vector<std::string>> ip_temp;
+    std::vector<ip_adress> result = {std::make_tuple(1,1,1,1)};
 
-    std::for_each(ip_test.begin(), ip_test.end(), [&ip_temp](auto &strv){ if (ipfilter(strv, "1")) ip_temp.push_back(strv); });
+    auto ip_temp = ipfilter(ip_test, 1);
     BOOST_REQUIRE(ip_temp == result);
 
 }
 
 BOOST_AUTO_TEST_CASE(test_filter_46_70)
 {
+    std::vector<ip_adress> ip_test = {std::make_tuple(46,5,1,1),
+                                      std::make_tuple(46,70,5,5),
+                                      std::make_tuple(6,2,70,2)};
 
-    std::vector<std::vector<std::string>> ip_test = {{"46","5","2","2"}, {"46","70","1","1"}, {"5","70","5","5"}};
-    std::vector<std::vector<std::string>> result = {{"46","70","1","1"}};
-    std::vector<std::vector<std::string>> ip_temp;
+    std::vector<ip_adress> result = {std::make_tuple(46,70,5,5)};
 
-    std::for_each(ip_test.begin(), ip_test.end(), [&ip_temp](auto &strv){ if (ipfilter(strv, "46", "70")) ip_temp.push_back(strv); });
+    auto ip_temp = ipfilter(ip_test, 46, 70);
     BOOST_REQUIRE(ip_temp == result);
-
 }
 
 BOOST_AUTO_TEST_CASE(test_filter_46_any)
 {
+    std::vector<ip_adress> ip_test = {std::make_tuple(5,46,1,1),
+                                      std::make_tuple(46,70,5,5),
+                                      std::make_tuple(6,2,70,2)};
 
-    std::vector<std::vector<std::string>> ip_test = {{"5","46","2","2"}, {"46","70","1","1"}, {"5","70","5","5"}};
-    std::vector<std::vector<std::string>> result = {{"5","46","2","2"}, {"46","70","1","1"}};
-    std::vector<std::vector<std::string>> ip_temp;
+    std::vector<ip_adress> result = {std::make_tuple(5,46,1,1),
+                                     std::make_tuple(46,70,5,5)};
 
-    std::for_each(ip_test.begin(), ip_test.end(), [&ip_temp](auto &strv){ if (ipfilter_any(strv, "46")) ip_temp.push_back(strv); });
+    auto ip_temp = ipfilter_any(ip_test, 46);
     BOOST_REQUIRE(ip_temp == result);
-
 }
 
 BOOST_AUTO_TEST_SUITE_END()
